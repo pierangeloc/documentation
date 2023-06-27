@@ -65,7 +65,7 @@
         contents:
 
         - action: integrations
-          branch: prod
+          branch: docs5296/add-metric-note
           globs:
           - integration/*/*_metadata.csv
           - integration/*/manifest.json
