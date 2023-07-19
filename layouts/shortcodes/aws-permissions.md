@@ -10,7 +10,7 @@ The set of permissions necessary to use all the integrations for individual AWS 
 
 The following permissions included in the policy document use wild cards such as `List*` and `Get*`. If you require strict policies, use the complete action names as listed and reference the Amazon API documentation for your respective services.
 
-{{< code-block lang="json" filename="" disable_copy="false" collapsible="true" >}}
+```shell
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -96,7 +96,7 @@ The following permissions included in the policy document use wild cards such as
         }
     ]
 }
-{{< /code-block >}}
+```
 
 ### AWS Security Audit Policy
 
