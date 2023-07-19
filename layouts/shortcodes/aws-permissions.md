@@ -10,7 +10,7 @@ The set of permissions necessary to use all the integrations for individual AWS 
 
 The following permissions included in the policy document use wild cards such as `List*` and `Get*`. If you require strict policies, use the complete action names as listed and reference the Amazon API documentation for your respective services.
 
-```json
+{{< code-block lang="json" filename="" disable_copy="false" collapsible="true" >}}
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -96,7 +96,8 @@ The following permissions included in the policy document use wild cards such as
         }
     ]
 }
-```
+{{< /code-block >}}
+
 ### AWS Security Audit Policy
 
 To use <a href="https://docs.datadoghq.com/integrations/amazon_web_services/#resource-collection" target="_blank">Cloud Security Posture Management</a>, attach AWS's managed <a href="https://console.aws.amazon.com/iam/home#policies/arn:aws:iam::aws:policy/SecurityAudit" target="_blank">SecurityAudit Policy</a> to your Datadog IAM role.
