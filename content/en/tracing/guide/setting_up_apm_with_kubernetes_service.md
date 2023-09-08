@@ -14,7 +14,7 @@ further_reading:
 
 There are 3 main ways the Datadog Tracers send their data to the Datadog Agent for the proper handling. Those are: Host IP, Unix Domain Socket (UDS), and the Kubernetes service. These options are all setup in a way to ensure the APM data the application pod sends arrive to the Datadog Agent pod on the same node. This strategy is meant to properly balance the traffic and ensure the correct tagging of your data.
 
-Datadog recommends to utilize the UDS strategy to send data. However, the Kubernetes service can be used as an alternative option when the `hostPath` volumes required for UDS and the `hostPort` ports required for the Host IP method are not available.
+Datadog recommends that you use UDS to send data. However, if the `hostPath` volumes required for UDS (and the `hostPort` ports required for using host IP) are not available, you can use a Kubernetes service as an alternative option.
 
 ## Service setup
 
@@ -22,7 +22,7 @@ In Kubernetes you can take advantage of [services][1] to help route traffic to d
 
 This service is created for you automatically in our Datadog Helm Chart and Datadog Operator on Kubernetes clusters with version 1.22.0 or above. You additionally need to enable the APM port option for your Agent with the below configuration.
 
-### Agent Configuration
+### Agent configuration
 {{< tabs >}}
 {{% tab "Helm" %}}
 
@@ -50,7 +50,7 @@ spec:
 {{< /tabs >}}
 
 ## Application configuration
-To take advantage of the service the Datadog Tracer needs the `DD_AGENT_HOST` environment variable set relative to the created service. 
+You can configure your application to use the Kubernetes service manually, or by using the [Cluster Agent Admission Controller][3].
 
 ### Admission controller
 The [Cluster Agent's Admission Controller][3] can simplify the configuration for APM by injecting the environment variables for connectivity. This has the configuration mode of `hostip`, `socket`, or `service` relative to the 3 options. When choosing the configuration mode of `service` the Admission Controller adds the `DD_AGENT_HOST` with the proper service name and namespace format.
@@ -89,7 +89,7 @@ spec:
 **Note:** In mixed node (Linux/Windows) environments, the Cluster Agent and its Admission Controller are relative to the Linux deployment. This may inject the wrong environment variables for the service connectivity in the Windows pods. 
 
 ### Manual configuration
-If you are setting this environment variable `DD_AGENT_HOST` manually with in your pod manifest be sure you are using the right DNS name. The general value to provide is `<SERVICE_NAME>.<SERVICE_NAMESPACE>.svc.cluster.local`. Your application pod instrumented with the Datadog Tracer should have the environment variable: 
+For manual configuration, set the environment variable `DD_AGENT_HOST` within your pod manifest, with a value of `<SERVICE_NAME>.<SERVICE_NAMESPACE>.svc.cluster.local`.
 
 ```yaml
     #(...)
@@ -102,7 +102,9 @@ If you are setting this environment variable `DD_AGENT_HOST` manually with in yo
             value: <SERVICE_NAME>.<SERVICE_NAMESPACE>.svc.cluster.local
 ```
 
-This depends on the name of the service created for you and the namespace you have deployed the Datadog components. For example you service definition may look like:
+Replace `<SERVICE_NAME>` with the service's name, and replace `<SERVICE_NAMESPACE>` with the service's namespace.
+
+ For example, if your service definition looks like the following:
 
 ```yaml
 apiVersion: v1
@@ -127,7 +129,17 @@ spec:
   internalTrafficPolicy: Local
 ```
 
-In this above example the `DD_AGENT_HOST` should be set to `datadog.monitoring.svc.cluster.local`.
+Then set the value of `DD_AGENT_HOST` to `datadog.monitoring.svc.cluster.local`.
+
+```yaml
+    #(...)
+    spec:
+      containers:
+      - name: "<CONTAINER_NAME>"
+        image: "<CONTAINER_IMAGE>"
+        env:
+          - name: DD_AGENT_HOST
+            value: datadog.monitoring.svc.cluster.local
 
 ## Further reading
 
