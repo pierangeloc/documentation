@@ -65,7 +65,7 @@
         contents:
 
         - action: integrations
-          branch: docs6098/update-github-docs
+          branch: docs6018/move-gcp-logs-instructions-to-guide
           globs:
           - integration/*/*_metadata.csv
           - integration/*/manifest.json
