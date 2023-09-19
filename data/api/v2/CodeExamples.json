@@ -1,4 +1,11 @@
 {
+  "UpdateApmRetentionFilter": [
+    {
+      "group": "apm_retention_filters",
+      "suffix": "_3023114678",
+      "description": "Update a retention filters returns \"OK\" response"
+    }
+  ],
   "SearchAuditLogs": [
     {
       "group": "audit",
